@@ -1,0 +1,39 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'maven'
+
+apply from: 'http://dev.local/gradle/android/uploadArchives.groovy'
+apply from: 'http://dev.local/gradle/android/defaultRepositories.groovy'
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+    }
+}
+
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.1"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 24
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+
+}
+
+dependencies {
+    compile 'com.unidev.android.platform:core-utils:3.1.1'
+    compile 'com.unidev.android.platform:ui-utils:3.1.1'
+    compile project(':polydata-flat-file-storage-http-client-android')
+}

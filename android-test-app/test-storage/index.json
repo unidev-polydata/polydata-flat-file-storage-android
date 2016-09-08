@@ -1,0 +1,10 @@
+{
+  "metadata" : { },
+  "list" : [ {
+    "link" : "index1.json",
+    "_id" : "index1"
+  }, {
+    "link" : "index2.json",
+    "_id" : "index2"
+  } ]
+}
