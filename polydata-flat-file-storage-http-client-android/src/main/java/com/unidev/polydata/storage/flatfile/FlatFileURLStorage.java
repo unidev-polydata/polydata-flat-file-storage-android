@@ -3,6 +3,7 @@ package com.unidev.polydata.storage.flatfile;
 import com.unidev.core.okhttp.OkHttpUtils;
 import com.unidev.polydata.FlatFileStorage;
 import com.unidev.polydata.FlatFileStorageMapper;
+import com.unidev.polydata.domain.Poly;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -58,6 +59,33 @@ public class FlatFileURLStorage {
             }
         }
         return index;
+    }
+
+    /**
+     * Fetch polydata storage
+     * @param storagePoly
+     * @return
+     */
+    public FlatFileStorage fetchStorage(Poly storagePoly) {
+        Request storageRequest = new Request.Builder()
+                .url(url + "/" + storagePoly.link()).build();
+
+        Response response;
+        ResponseBody responseBody = null;
+        FlatFileStorage storage = null;
+        try {
+            response = httpClient.newCall(storageRequest).execute();
+            responseBody = response.body();
+            storage = FlatFileStorageMapper.storageMapper().loadSource(responseBody.byteStream()).load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (responseBody != null) {
+                responseBody.close();
+            }
+        }
+        return storage;
+
     }
 
 
