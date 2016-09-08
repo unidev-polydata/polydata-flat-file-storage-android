@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list);
 
-        final List<? extends Poly> records = new ArrayList<>(Core.getInstance().fetchStorage().list());
+        final List<? extends Poly> records = new ArrayList<>(Core.getInstance().flatFileURLStorage().index().list());
 
 
         listView.setAdapter(new BaseAdapter() {
@@ -73,17 +73,11 @@ public class MainFragment extends Fragment {
                 item.setText(poly + "");
 
                 final Button button = (Button) view.findViewById(R.id.favs);
-                updateButton(button, poly);
 
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
-                            Core.getInstance().fetchFavorites().removePoly(poly._id());
-                        } else {
-                            Core.getInstance().fetchFavorites().addPoly(poly);
-                        }
-                        updateButton(button, poly);
+
                     }
                 });
 
@@ -94,12 +88,5 @@ public class MainFragment extends Fragment {
     }
 
 
-    protected void updateButton(Button button, Poly poly) {
-        if (Core.getInstance().fetchFavorites().hasPoly(poly._id())) {
-            button.setText("Remove");
-        } else {
-            button.setText("Add");
-        }
-    }
 
 }

@@ -18,6 +18,10 @@ package com.unidev.app.testapp.core;
 import android.content.Context;
 
 import com.unidev.core.di.AppContext;
+import com.unidev.polydata.storage.flatfile.FlatFileURLStorage;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Application custom backend logic
@@ -30,8 +34,22 @@ public class Core {
         return AppContext.getInstance(INSTANCE_NAME, Core.class);
     }
 
-    public void load(Context context) {
+    private FlatFileURLStorage flatFileURLStorage;
 
+    ExecutorService executorService = Executors.newFixedThreadPool(1);
+
+    public void load(Context context) {
+        flatFileURLStorage = new FlatFileURLStorage("http://10.10.10.11:8000");
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                flatFileURLStorage.fetchIndex();
+            }
+        });
+    }
+
+    public FlatFileURLStorage flatFileURLStorage() {
+        return flatFileURLStorage;
     }
 
 }

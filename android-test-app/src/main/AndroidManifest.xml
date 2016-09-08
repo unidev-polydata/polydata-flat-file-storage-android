@@ -19,7 +19,7 @@
         tools:replace="android:label"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="Poly App"
+        android:label="Remote Poly App"
         android:theme="@style/AppTheme"
         android:name=".App"
         >
