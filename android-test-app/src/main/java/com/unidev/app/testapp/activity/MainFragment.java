@@ -15,6 +15,8 @@
  */
 package com.unidev.app.testapp.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import android.widget.TextView;
 
 import com.unidev.app.testapp.R;
 import com.unidev.app.testapp.core.Core;
+import com.unidev.polydata.FlatFileStorage;
 import com.unidev.polydata.domain.Poly;
 
 import java.util.ArrayList;
@@ -77,6 +80,31 @@ public class MainFragment extends Fragment {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        Core.getInstance().executorService.submit(new Runnable() {
+                            @Override
+                            public void run() {
+                                final FlatFileStorage flatFileStorage = Core.getInstance().flatFileURLStorage().fetchStorage(poly);
+                                MainFragment.this.getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainFragment.this.getActivity());
+                                        builder.setTitle("Poly storage");
+                                        builder.setMessage(flatFileStorage + "");
+                                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+
+                                            }
+                                        });
+                                        AlertDialog dialog = builder.create();
+                                        dialog.show();
+                                    }
+                                });
+
+                            }
+                        });
+
 
                     }
                 });

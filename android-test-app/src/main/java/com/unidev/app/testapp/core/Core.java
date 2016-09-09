@@ -36,16 +36,11 @@ public class Core {
 
     private FlatFileURLStorage flatFileURLStorage;
 
-    ExecutorService executorService = Executors.newFixedThreadPool(1);
+    public ExecutorService executorService = Executors.newFixedThreadPool(1);
 
-    public void load(Context context) {
+    public void load() {
         flatFileURLStorage = new FlatFileURLStorage("http://10.10.10.11:8000");
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                flatFileURLStorage.fetchIndex();
-            }
-        });
+        flatFileURLStorage.fetchIndex();
     }
 
     public FlatFileURLStorage flatFileURLStorage() {

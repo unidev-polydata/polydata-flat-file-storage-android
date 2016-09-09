@@ -18,9 +18,15 @@ package com.unidev.app.testapp.activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.unidev.app.testapp.core.InitializationOperation;
 import com.unidev.uiutils.AbstractActivity;
+import com.unidev.uiutils.UIUtils;
 
 public class MainActivity extends AbstractActivity {
+
+    public static final String LOADING_TAG = "loadingTag";
+
+
     @Override
     protected boolean enableInfiniteLoading() {
         return false;
@@ -29,13 +35,20 @@ public class MainActivity extends AbstractActivity {
 
     @Override
     public Fragment buildContentFragment() {
-            return new MainFragment();
+            return null;
     }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        runOperation(new InitializationOperation(), LOADING_TAG);
+    }
+
+    public void onOperationFinished(final InitializationOperation.InitializationOperationResult result) {
+        Fragment fragment = new MainFragment();
+        replaceContent(fragment);
     }
 
     @Override
