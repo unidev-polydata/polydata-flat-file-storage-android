@@ -2,6 +2,21 @@
 
 Android client which can read flat file storage
 
+Usage
+=====
+
+```
+polydata-flat-file-storage-http-client-android:2.0.0-SNAPSHOT
+```
+
+```
+<dependency>
+  <groupId>com.unidev.polydata</groupId>
+  <artifactId>polydata-flat-file-storage-http-client-android</artifactId>
+  <version>2.0.0-SNAPSHOT</version>
+</dependency>
+```
+
 License
 =======
  
