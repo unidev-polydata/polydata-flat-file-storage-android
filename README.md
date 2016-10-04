@@ -5,10 +5,13 @@ Android client which can read flat file storage
 Usage
 =====
 
+Gradle 
+
 ```
-polydata-flat-file-storage-http-client-android:2.0.0-SNAPSHOT
+compile 'polydata-flat-file-storage-http-client-android:2.0.0-SNAPSHOT'
 ```
 
+Maven
 ```
 <dependency>
   <groupId>com.unidev.polydata</groupId>
