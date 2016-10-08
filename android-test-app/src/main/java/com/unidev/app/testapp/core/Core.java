@@ -15,10 +15,11 @@
  */
 package com.unidev.app.testapp.core;
 
-import android.content.Context;
-
 import com.unidev.core.di.AppContext;
+import com.unidev.polydata.FlatFileStorage;
+import com.unidev.polydata.domain.BasicPoly;
 import com.unidev.polydata.storage.flatfile.FlatFileURLStorage;
+import com.unidev.polydata.storage.flatfile.PagedFlatFileURLStorage;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -34,17 +35,31 @@ public class Core {
         return AppContext.getInstance(INSTANCE_NAME, Core.class);
     }
 
-    private FlatFileURLStorage flatFileURLStorage;
-
     public ExecutorService executorService = Executors.newFixedThreadPool(1);
 
+    private PagedFlatFileURLStorage pagedFlatFileURLStorage;
+    //private FlatFileURLStorage flatFileURLStorage;
+
     public void load() {
-        flatFileURLStorage = new FlatFileURLStorage("http://10.10.10.11:8000");
-        flatFileURLStorage.fetchIndex();
+        //flatFileURLStorage = new FlatFileURLStorage("https://raw.githubusercontent.com/unidev-polydata/polydata-flat-file-storage-android/master/example-storage");
+        //flatFileURLStorage.fetchIndex();
+
+        pagedFlatFileURLStorage = new PagedFlatFileURLStorage("https://raw.githubusercontent.com/unidev-polydata/polydata-flat-file-storage-android/master/example-storage");
+        pagedFlatFileURLStorage.fetchIndex();
+
+        pagedFlatFileURLStorage.fetchCurrentPage();
     }
 
-    public FlatFileURLStorage flatFileURLStorage() {
-        return flatFileURLStorage;
+    public FlatFileStorage currentPage() {
+        return pagedFlatFileURLStorage.fetchCurrentPage();
     }
+
+    public FlatFileStorage fetchPolyInfo(BasicPoly basicPoly) {
+        return pagedFlatFileURLStorage.fetchStorage(basicPoly.link());
+    }
+
+    /*public FlatFileURLStorage flatFileURLStorage() {
+        return flatFileURLStorage;
+    }*/
 
 }

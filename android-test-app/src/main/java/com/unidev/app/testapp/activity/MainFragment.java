@@ -45,13 +45,13 @@ public class MainFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.list);
 
-        final List<? extends Poly> records = new ArrayList<>(Core.getInstance().flatFileURLStorage().index().list());
-
+        final FlatFileStorage currentPage = Core.getInstance().currentPage();
+        final ArrayList<Poly> polyArrayList = new ArrayList<>(currentPage.list());
 
         listView.setAdapter(new BaseAdapter() {
             @Override
             public int getCount() {
-                return records.size();
+                return polyArrayList.size();
             }
 
             @Override
@@ -70,10 +70,10 @@ public class MainFragment extends Fragment {
                     view = inflater.inflate(R.layout.list_item, null);
                 }
 
-                final Poly poly = records.get(position);
+                final Poly poly = polyArrayList.get(position);
 
                 TextView item = (TextView) view.findViewById(R.id.item);
-                item.setText(poly + "");
+                item.setText(poly._id() + "");
 
                 final Button button = (Button) view.findViewById(R.id.favs);
 
@@ -81,29 +81,17 @@ public class MainFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
 
-                        Core.getInstance().executorService.submit(new Runnable() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MainFragment.this.getActivity());
+                        builder.setTitle("Poly record");
+                        builder.setMessage(poly + "");
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
-                            public void run() {
-                                final FlatFileStorage flatFileStorage = Core.getInstance().flatFileURLStorage().fetchStorage(poly);
-                                MainFragment.this.getActivity().runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        AlertDialog.Builder builder = new AlertDialog.Builder(MainFragment.this.getActivity());
-                                        builder.setTitle("Poly storage");
-                                        builder.setMessage(flatFileStorage + "");
-                                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                            }
-                                        });
-                                        AlertDialog dialog = builder.create();
-                                        dialog.show();
-                                    }
-                                });
+                            public void onClick(DialogInterface dialog, int which) {
 
                             }
                         });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
 
 
                     }
