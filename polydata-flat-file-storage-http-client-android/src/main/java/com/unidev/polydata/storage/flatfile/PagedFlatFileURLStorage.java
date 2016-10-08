@@ -47,32 +47,18 @@ public class PagedFlatFileURLStorage {
      * @return
      */
     public FlatFileStorage fetchIndex() {
-        Request indexRequest = new Request.Builder()
-                .url(url + "/" + INDEX_FILE).build();
-        Response response;
-        ResponseBody responseBody = null;
-        try {
-            response = httpClient.newCall(indexRequest).execute();
-            responseBody = response.body();
-            index = FlatFileStorageMapper.storageMapper().loadSource(responseBody.byteStream()).load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (responseBody != null) {
-                responseBody.close();
-            }
-        }
+        index = fetchStorage(INDEX_FILE);
         return index;
     }
 
     /**
-     * Fetch stored poly
-     * @param storagePoly
+     * Fetch poly storage from path
+     * @param path Link to storage poly
      * @return
      */
-    public FlatFileStorage fetchStorage(Poly storagePoly) {
+    public FlatFileStorage fetchStorage(String path) {
         Request storageRequest = new Request.Builder()
-                .url(url + "/" + storagePoly.link()).build();
+                .url(url + "/" + path).build();
 
         Response response;
         ResponseBody responseBody = null;
@@ -89,7 +75,6 @@ public class PagedFlatFileURLStorage {
             }
         }
         return storage;
-
     }
 
     // Navigation related things
@@ -103,7 +88,7 @@ public class PagedFlatFileURLStorage {
             return pageCache.get(page);
         }
         BasicPoly poly = index.getList().get(page);
-        FlatFileStorage pageStorage = fetchStorage(poly);
+        FlatFileStorage pageStorage = fetchStorage(poly.link());
         pageCache.put(page, pageStorage);
         return pageStorage;
     }
